@@ -7,6 +7,7 @@ import { IProduct } from './product';
   styleUrls: ['./product-list.component.css']
 })
 export class ProductListComponent implements OnInit {
+  title:string = "Product List";
   filteredProducts: IProduct[];
   products: IProduct[]=[
     {
@@ -59,4 +60,7 @@ export class ProductListComponent implements OnInit {
       product.productName.toLocaleLowerCase().includes(this._listFilter.toLocaleLowerCase()));
   }
 
+  onNotify(message: string):void{
+    this.title = "Product List " + message; 
+  }
 }
