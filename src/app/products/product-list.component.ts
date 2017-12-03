@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { IProduct } from './product';
 
 @Component({
   selector: 'pm-product-list',
@@ -6,7 +7,8 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./product-list.component.css']
 })
 export class ProductListComponent implements OnInit {
-  products: any[]=[
+  filteredProducts: IProduct[];
+  products: IProduct[]=[
     {
       "productId": 1,
       "productName": "Leaf Rake",
@@ -29,13 +31,32 @@ export class ProductListComponent implements OnInit {
     }
   ];
   showImage: boolean = false;
+  _listFilter: string;
+  
+  public get listFilter() : string {
+    return this._listFilter;
+  }
+  
+  public set listFilter(v : string) {
+    this._listFilter = v;
+    this.filteredProducts = this._listFilter ? this.filterProducts() : this.products;
+  }
+  
+  
   constructor() { }
 
   ngOnInit() {
+    this._listFilter='';
+    this.filteredProducts = this.products;
   }
 
   toggleImage():void {
     this.showImage = !this.showImage;
+  }
+
+  filterProducts():  IProduct[] {
+    return this.products.filter((product : IProduct)=>
+      product.productName.toLocaleLowerCase().includes(this._listFilter.toLocaleLowerCase()));
   }
 
 }
