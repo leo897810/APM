@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { IProduct } from './product';
+import { ProductService } from '../service/product.service';
 
 @Component({
   selector: 'pm-product-list',
@@ -32,6 +33,7 @@ export class ProductListComponent implements OnInit {
     }
   ];
   showImage: boolean = false;
+  errorMessage: string;
   _listFilter: string;
   
   public get listFilter() : string {
@@ -44,11 +46,13 @@ export class ProductListComponent implements OnInit {
   }
   
   
-  constructor() { }
+  constructor(private productService: ProductService) { }
 
   ngOnInit() {
+    this.productService.getProducts().subscribe(
+                    products=> {this.products = products;this.filteredProducts = this.products;},
+                    error=> this.errorMessage = <any>error);
     this._listFilter='';
-    this.filteredProducts = this.products;
   }
 
   toggleImage():void {
